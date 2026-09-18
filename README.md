@@ -4,6 +4,8 @@ A single-page, scroll-driven presentation of the Universal Declaration of Human 
 
 Built with Next.js (App Router), TypeScript, Tailwind CSS and [Motion](https://motion.dev). It exports to plain static files and deploys to Netlify with no server runtime.
 
+**Live site: <https://udhr-reader.netlify.app/>**
+
 ## Structure
 
 The page reads top to bottom:
@@ -47,7 +49,7 @@ npm run lint
 
 ## Deploying to Netlify
 
-The repo ships a [`netlify.toml`](netlify.toml) that runs `npm run build` and publishes the `out` directory. Push to GitHub, then in Netlify choose **Add new site → Import an existing project**, pick the repository and accept the detected settings.
+Deployed at <https://udhr-reader.netlify.app/>. The repo ships a [`netlify.toml`](netlify.toml) that runs `npm run build` and publishes the `out` directory. Push to GitHub, then in Netlify choose **Add new site → Import an existing project**, pick the repository and accept the detected settings.
 
 ## Licence
 
