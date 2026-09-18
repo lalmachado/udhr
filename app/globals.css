@@ -1,0 +1,230 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f6f1e8;
+  --color-paper-deep: #ebe4d6;
+  --color-ink: #141210;
+  --color-ink-soft: #3b3733;
+  --color-ink-mute: #6b665f;
+
+  --font-display: var(--font-fraunces), "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Editorial type scale. Each token also carries its own leading/tracking. */
+  --text-hero: clamp(3.25rem, 11.5vw, 11rem);
+  --text-hero--line-height: 0.9;
+  --text-hero--letter-spacing: -0.035em;
+
+  --text-part: clamp(3rem, 8.5vw, 7.5rem);
+  --text-part--line-height: 0.92;
+  --text-part--letter-spacing: -0.03em;
+
+  --text-numeral: clamp(5.5rem, 18vw, 12rem);
+  --text-numeral--line-height: 0.85;
+  --text-numeral--letter-spacing: -0.04em;
+
+  --text-lede: clamp(1.375rem, 2.3vw, 2rem);
+  --text-lede--line-height: 1.3;
+
+  --text-clause: clamp(1.5rem, 3vw, 2.5rem);
+  --text-clause--line-height: 1.2;
+  --text-clause--letter-spacing: -0.01em;
+
+  --text-reading: clamp(1.1875rem, 1.5vw, 1.5rem);
+  --text-reading--line-height: 1.5;
+
+  --text-title: clamp(1.75rem, 3.2vw, 2.75rem);
+  --text-title--line-height: 1.1;
+  --text-title--letter-spacing: -0.02em;
+}
+
+/* Registered so the site-wide accent can cross-fade as the reader moves between parts. */
+@property --accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ea4636;
+}
+@property --accent-ink {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #b8291e;
+}
+@property --on-accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #141210;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    overflow-x: clip;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--on-accent);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--accent-ink);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  .font-display {
+    font-optical-sizing: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .label {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  @media (width >= 40rem) {
+    .label {
+      font-size: 0.75rem;
+    }
+  }
+
+  .skip-link {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 100;
+    padding: 0.75rem 1.25rem;
+    border-radius: 9999px;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transform: translateY(-200%);
+    transition: transform 0.2s var(--ease-out-expo);
+  }
+  .skip-link:focus-visible {
+    transform: translateY(0);
+    outline-color: var(--color-paper);
+  }
+
+  .accent-transition {
+    transition:
+      --accent 600ms ease,
+      --accent-ink 600ms ease,
+      --on-accent 600ms ease;
+  }
+
+  /* Hollow display glyphs for the part numerals. */
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--on-accent);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-radius: 9999px;
+    padding: 0.875rem 1.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition:
+      transform 0.35s var(--ease-out-expo),
+      background-color 0.25s ease,
+      color 0.25s ease;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+  .btn-solid {
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+  .btn-solid:hover {
+    background: #fff;
+  }
+  .btn-ghost {
+    border: 1px solid color-mix(in srgb, var(--color-paper) 35%, transparent);
+    color: var(--color-paper);
+  }
+  .btn-ghost:hover {
+    background: color-mix(in srgb, var(--color-paper) 10%, transparent);
+  }
+
+  /* Hero atmosphere: soft colour fields that drift slowly, plus film grain. */
+  .aurora {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.5;
+    mix-blend-mode: screen;
+    will-change: transform;
+    animation: drift 24s ease-in-out infinite alternate;
+  }
+  .grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.08;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(6vw, -5vh, 0) scale(1.18);
+  }
+}
+
+@keyframes cue {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
